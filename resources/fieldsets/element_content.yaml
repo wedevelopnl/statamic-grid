@@ -1,1 +1,4 @@
 title: 'Element content'
+fields:
+  -
+    import: statamic-grid::fields.element_base_fields
