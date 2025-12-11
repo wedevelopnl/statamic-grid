@@ -11,7 +11,7 @@ use WeDevelop\StatamicGrid\Services\GridDataService;
 
 class Grid extends Replicator
 {
-    protected static $handle = 'grid';
+    protected static $handle = 'database-grid';
 
     protected GridDataService $gridService;
 
