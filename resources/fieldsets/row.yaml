@@ -1,0 +1,20 @@
+title: Row
+fields:
+  -
+    handle: rows
+    field:
+      type: replicator
+      display: Rows
+      instructions: 'Rows span the full width of the page'
+      collapse: true
+      replicator_preview: false
+      button_label: 'Add row'
+      sets:
+        new_set_group:
+          display: 'New Set Group'
+          sets:
+            row:
+              display: Row
+              fields:
+                -
+                  import: statamic-grid::element

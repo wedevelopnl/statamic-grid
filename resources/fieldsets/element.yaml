@@ -1,0 +1,26 @@
+title: Element
+fields:
+  - import: statamic-grid::fields.element_base_fields
+  -
+    handle: elements
+    field:
+      type: replicator
+      display: Elements
+      instructions: 'Elements can be resized to predefined widths'
+      collapse: true
+      sets:
+        content:
+          display: Content
+          sets:
+            text:
+              display: Text
+              icon: text-formatting-all-caps
+              fields:
+                -
+                  import: statamic-grid::element_content
+            image:
+              display: Image
+              icon: media-image-picture-orientation
+              fields:
+                -
+                  import: statamic-grid::element_image
