@@ -1,4 +1,0 @@
-title: 'Element image'
-fields:
-  -
-    import: statamic-grid::fields.element_image_fields

@@ -1,8 +1,0 @@
-title: 'Element image fields'
-fields:
-  -
-    handle: image
-    field:
-      container: assets
-      type: assets
-      display: Image
