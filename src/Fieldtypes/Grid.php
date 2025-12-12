@@ -42,6 +42,19 @@ class Grid extends Replicator
         $entryId = $entry?->id();
         $slug = $entry?->slug();
 
+        // For new entries, the field parent might be Collection, not Entry
+        // Try to get slug from request data as fallback
+        if (! $slug) {
+            $slug = request()->input('slug');
+        }
+
+        \Illuminate\Support\Facades\Log::info('Grid process called', [
+            'entryId' => $entryId,
+            'slug' => $slug,
+            'hasData' => is_array($data) && ! empty($data),
+            'dataCount' => is_array($data) ? count($data) : 0,
+        ]);
+
         // Store grid data for saving after entry is persisted
         if (is_array($data) && ! empty($data)) {
             if ($entryId) {
@@ -60,6 +73,13 @@ class Grid extends Replicator
      */
     public function preProcess(mixed $data): array
     {
+        \Illuminate\Support\Facades\Log::info('Grid preProcess called', [
+            'data' => $data,
+            'field_exists' => $this->field !== null,
+            'parent_class' => $this->field?->parent() ? get_class($this->field->parent()) : 'null',
+            'parent_id' => $this->field?->parent()?->id(),
+        ]);
+
         $entryId = $this->resolveEntryId($data);
 
         if (! $entryId) {
@@ -92,13 +112,18 @@ class Grid extends Replicator
      */
     protected function resolveEntryId(mixed $data): ?string
     {
-        // Try stored marker first (for post-save response)
-        if (is_array($data) && isset($data['__entry_id'])) {
+        // Always try field parent first - most reliable source of truth
+        $entryId = $this->getEntry()?->id();
+        if ($entryId) {
+            return $entryId;
+        }
+
+        // Fall back to stored marker (for edge cases)
+        if (is_array($data) && ! empty($data['__entry_id'])) {
             return $data['__entry_id'];
         }
 
-        // Fall back to field parent
-        return $this->getEntry()?->id();
+        return null;
     }
 
     /**
